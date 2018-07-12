@@ -15,22 +15,18 @@ import gensim.models.keyedvectors as word2vec
 
 from data_reader import study_ideas_dataset
 
-
-
-
-if __name__=='__main__':
+if __name__ == '__main__':
 
     x = study_ideas_dataset()
-    
-    pairwise_sim_1 = np.load('tfidf_similarity.npy')
 
-    
-    sim_1 = pairwise_sim[0,:]
+    pairwise_sim = np.load('tfidf_similarity.npy')
+
+    sim_1 = pairwise_sim[0, :]
     for i in range(len(x)):
-        if sim_1[i]>=0.2:
+        if sim_1[i] >= 0.2:
             print(x[i], sim_1[i])
-    
-    quit()
+
+    # quit()
 
     print('TFIDF EXAMPLES:')
     temp_max = 0.0
@@ -38,14 +34,14 @@ if __name__=='__main__':
     temp_min = 1.0
     for i in range(len(pairwise_sim)):
         for j in range(len(pairwise_sim)):
-            if i==j: continue
-            if pairwise_sim[i,j]>temp_max and pairwise_sim[i,j]<0.999:
-                temp_max = pairwise_sim[i,j]
-                x_max_idx, y_max_idx = i, j            
-            if pairwise_sim[i,j]<temp_min:
-                temp_min = pairwise_sim[i,j]
+            if i == j: continue
+            if pairwise_sim[i, j] > temp_max and pairwise_sim[i, j] < 0.999:
+                temp_max = pairwise_sim[i, j]
+                x_max_idx, y_max_idx = i, j
+            if pairwise_sim[i, j] < temp_min:
+                temp_min = pairwise_sim[i, j]
                 x_min_idx, y_min_idx = i, j
-            if np.abs(pairwise_sim[i,j]-temp_avg)<0.05:
+            if np.abs(pairwise_sim[i, j] - temp_avg) < 0.05:
                 x_avg_idx, y_avg_idx = i, j
 
     print('Very similar')
@@ -62,13 +58,12 @@ if __name__=='__main__':
     print(x[x_avg_idx])
     print(x[y_avg_idx])
     print(pairwise_sim[x_avg_idx, y_avg_idx])
-    
-    
+
     pairwise_sim = np.load('word2vec_similarity.npy')
 
-    sim_1 = pairwise_sim[0,:]
+    sim_1 = pairwise_sim[0, :]
     for i in range(len(x)):
-        if sim_1[i]>=0.85:
+        if sim_1[i] >= 0.85:
             print(x[i], sim_1[i])
     quit()
 
@@ -78,14 +73,14 @@ if __name__=='__main__':
     temp_min = 1.0
     for i in range(len(pairwise_sim)):
         for j in range(len(pairwise_sim)):
-            if i==j: continue
-            if pairwise_sim[i,j]>temp_max and pairwise_sim[i,j]<0.999:
-                temp_max = pairwise_sim[i,j]
-                x_max_idx, y_max_idx = i, j            
-            if pairwise_sim[i,j]<temp_min:
-                temp_min = pairwise_sim[i,j]
+            if i == j: continue
+            if pairwise_sim[i, j] > temp_max and pairwise_sim[i, j] < 0.999:
+                temp_max = pairwise_sim[i, j]
+                x_max_idx, y_max_idx = i, j
+            if pairwise_sim[i, j] < temp_min:
+                temp_min = pairwise_sim[i, j]
                 x_min_idx, y_min_idx = i, j
-            if np.abs(pairwise_sim[i,j]-temp_avg)<0.05:
+            if np.abs(pairwise_sim[i, j] - temp_avg) < 0.05:
                 x_avg_idx, y_avg_idx = i, j
 
     print('Very similar')
@@ -102,4 +97,3 @@ if __name__=='__main__':
     print(x[x_avg_idx])
     print(x[y_avg_idx])
     print(pairwise_sim[x_avg_idx, y_avg_idx])
-    
