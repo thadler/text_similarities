@@ -6,10 +6,12 @@ from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.decomposition import TruncatedSVD
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.linear_model import SGDClassifier
 from sklearn.svm import LinearSVC
-from sklearn.metrics import accuracy_score
+from sklearn.pipeline import Pipeline
+from sklearn.metrics import accuracy_score, pairwise_distances
 
 import gensim.models.keyedvectors as word2vec
 
@@ -56,8 +58,22 @@ def word2vec_sim(x):
     dist /= np.max(dist)
     sim = 1 - dist
     print(sim[:5, :5])
-    # TODO remove todense
-    return sim.todense()
+    return sim
+
+
+def lsa_sim(texts):
+    #vectorizer = TfidfVectorizer(tokenizer=Tokenizer(), stop_words='english', use_idf=True, smooth_idf=True)
+    vectorizer      = TfidfVectorizer()
+    print(vectorizer)
+    svd_model       = TruncatedSVD(n_components=500, algorithm='randomized', n_iter=10, random_state=42)
+    svd_transformer = Pipeline([('tfidf', vectorizer), ('svd', svd_model)])
+    svd_matrix      = svd_transformer.fit_transform(texts)
+    print(svd_matrix)
+
+    transformed     = svd_transformer.transform(texts)
+    sim = 1 - pairwise_distances(transformed, svd_matrix, metric='cosine', n_jobs=-1)
+    print(sim[:5,:5])
+    return sim 
 
 
 if __name__ == '__main__':
@@ -67,3 +83,5 @@ if __name__ == '__main__':
     np.save('storage/results/tfidf_similarity.npy', pairwise_sim)
     pairwise_sim = word2vec_sim(x)
     np.save('storage/results/word2vec_similarity.npy', pairwise_sim)
+    pairwise_sim = lsa_sim(x)
+    np.save('storage/results/lsa_similarity.npy', pairwise_sim)
