@@ -10,6 +10,7 @@ from sklearn.linear_model import SGDClassifier
 
 
 def quora_duplicate_questions_dataset():
+    """Loads the quora dataset"""
     with open("datasets/quora_duplicate_questions.tsv") as fin:
         filereader = csv.reader(fin, delimiter='\t')
         x11, x21, y1 = [], [], []
@@ -40,6 +41,7 @@ def quora_duplicate_questions_dataset():
 
 
 def study_ideas_dataset():
+    """Loads the hcc intern study ideas dataset"""
     x = []
     with open("storage/datasets/preliminary-study-ideas.csv") as fin:
         filereader = csv.reader(fin, delimiter='\t')
