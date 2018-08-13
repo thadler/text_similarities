@@ -1,13 +1,7 @@
+# imports
 import csv
 import numpy as np
-import scipy
-
 from sklearn.model_selection import train_test_split
-from sklearn.feature_extraction.text import CountVectorizer
-from sklearn.feature_extraction.text import TfidfTransformer
-from sklearn.naive_bayes import MultinomialNB
-from sklearn.linear_model import SGDClassifier
-
 
 def quora_duplicate_questions_dataset():
     """Loads the quora dataset"""
