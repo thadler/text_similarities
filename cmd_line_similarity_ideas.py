@@ -8,7 +8,15 @@ from sklearn.metrics import accuracy_score, pairwise_distances
 import gensim.models.keyedvectors as word2vec
 from data_reader import study_ideas_dataset
 
+# functions that compute the similarity between texts
+
 def tf_idf_similarity(texts):
+    """Embeds texts in tf idf vector representations then stores the cosine 
+       similarity between all texts in a similarity matrix
+       
+    Keyword arguments:
+    texts -- an iterable of strings where each string represents a text
+    """
     tfidf = TfidfVectorizer().fit_transform(texts)
     pairwise_similarity = tfidf * tfidf.T
     # automatically positive for tfidf
@@ -16,7 +24,13 @@ def tf_idf_similarity(texts):
     return pairwise_similarity.todense()
 
 def word2vec_sim(texts):
-    xx = [[w.strip() for w in text.split()] for text in texts]
+    """Embeds texts in tf idf vector representations then stores the cosine 
+       similarity between all texts in a similarity matrix
+       
+    Keyword arguments:
+    texts -- an iterable of strings where each string represents a text
+    """
+    texts = [[w.strip() for w in text.split()] for text in texts]
     print('loading embedding, can take one minute')
     emb = word2vec.KeyedVectors.load_word2vec_format('storage/wordvectors/GoogleNews-vectors-negative300.bin', binary=True)
     print('done loading embedding')
@@ -27,6 +41,7 @@ def word2vec_sim(texts):
     for i in range(len(texts)):
         if len(texts[i]) == 0:
             texts[i] = ['from']
+    print(texts)
 
     print('creating embedded texts')
     embedded_texts = np.zeros((len(texts), emb['from'].shape[0]), dtype=np.float32)
@@ -73,10 +88,10 @@ if __name__ == '__main__':
     if similarity_tech=='tfidf':
         pairwise_sim = tf_idf_similarity(ideas)
         np.save('storage/results/tfidf_similarity_'+results_name+'.npy', pairwise_sim)
-    elif classifier_tech=='word2vec':
+    elif similarity_tech=='word2vec':
         pairwise_sim = word2vec_sim(ideas)
         np.save('storage/results/word2vec_similarity_'+results_name+'.npy', pairwise_sim)
-    elif classifier_tech=='lsa':
+    elif similarity_tech=='lsa':
         pairwise_sim = lsa_sim(ideas)
         np.save('storage/results/lsa_similarity_'+results_name+'.npy', pairwise_sim)
     else:
