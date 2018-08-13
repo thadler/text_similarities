@@ -87,12 +87,12 @@ if __name__ == '__main__':
 
     if similarity_tech=='tfidf':
         pairwise_sim = tf_idf_similarity(ideas)
-        np.save('storage/results/tfidf_similarity_'+results_name+'.npy', pairwise_sim)
+        np.savetxt('storage/results/tfidf_similarity_'+results_name+'.csv', pairwise_sim)
     elif similarity_tech=='word2vec':
         pairwise_sim = word2vec_sim(ideas)
-        np.save('storage/results/word2vec_similarity_'+results_name+'.npy', pairwise_sim)
+        np.savetxt('storage/results/word2vec_similarity_'+results_name+'.csv', pairwise_sim)
     elif similarity_tech=='lsa':
         pairwise_sim = lsa_sim(ideas)
-        np.save('storage/results/lsa_similarity_'+results_name+'.npy', pairwise_sim)
+        np.savetxt('storage/results/lsa_similarity_'+results_name+'.csv', pairwise_sim)
     else:
         print('This similarity technique is not offered')
