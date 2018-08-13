@@ -1,3 +1,4 @@
+# imports
 import sys
 import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -14,32 +15,32 @@ def tf_idf_similarity(texts):
     print(pairwise_similarity[:5, :5])
     return pairwise_similarity.todense()
 
-def word2vec_sim(x):
-    xx = [[w.strip() for w in text.split()] for text in x]
+def word2vec_sim(texts):
+    xx = [[w.strip() for w in text.split()] for text in texts]
     print('loading embedding, can take one minute')
     emb = word2vec.KeyedVectors.load_word2vec_format('storage/wordvectors/GoogleNews-vectors-negative300.bin', binary=True)
     print('done loading embedding')
 
     # remove unknown words
     wv = emb.wv
-    x = [[w for w in text if w in wv] for text in x]
-    for i in range(len(x)):
-        if len(x[i]) == 0:
-            x[i] = ['from']
+    texts = [[w for w in text if w in wv] for text in texts]
+    for i in range(len(texts)):
+        if len(texts[i]) == 0:
+            texts[i] = ['from']
 
     print('creating embedded texts')
-    embedded_x = np.zeros((len(x), emb['from'].shape[0]), dtype=np.float32)
-    print('embedding texts', len(embedded_x))
-    for i in range(len(embedded_x)):
+    embedded_texts = np.zeros((len(texts), emb['from'].shape[0]), dtype=np.float32)
+    print('embedding texts', len(embedded_texts))
+    for i in range(len(embedded_texts)):
         if i % 10 ** 4 == 0: print('i: ', i, end=' ', flush=True)
-        for w in x[i]: embedded_x[i] += emb[w]
-        embedded_x[i] /= len(x[i])
+        for w in texts[i]: embedded_texts[i] += emb[w]
+        embedded_texts[i] /= len(texts[i])
 
     print('calculating distances')
-    dist = np.zeros((len(embedded_x), len(embedded_x)))
-    for i in range(len(embedded_x)):
-        for j in range(len(embedded_x)):
-            dist[i, j] = np.linalg.norm(embedded_x[i] - embedded_x[j])
+    dist = np.zeros((len(embedded_texts), len(embedded_texts)))
+    for i in range(len(embedded_texts)):
+        for j in range(len(embedded_texts)):
+            dist[i, j] = np.linalg.norm(embedded_texts[i] - embedded_texts[j])
     dist /= np.max(dist)
     sim = 1 - dist
     print(sim[:5, :5])
