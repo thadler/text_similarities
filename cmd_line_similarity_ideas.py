@@ -16,19 +16,18 @@ def tf_idf_similarity(texts):
 
 def word2vec_sim(x):
     xx = [[w.strip() for w in text.split()] for text in x]
-    print('loading embedding')
+    print('loading embedding, can take one minute')
     emb = word2vec.KeyedVectors.load_word2vec_format('storage/wordvectors/GoogleNews-vectors-negative300.bin', binary=True)
     print('done loading embedding')
 
+    # remove unknown words
     wv = emb.wv
     x = [[w for w in text if w in wv] for text in x]
-
-    print('done changing texts')
     for i in range(len(x)):
         if len(x[i]) == 0:
             x[i] = ['from']
 
-    print('create embedded texts')
+    print('creating embedded texts')
     embedded_x = np.zeros((len(x), emb['from'].shape[0]), dtype=np.float32)
     print('embedding texts', len(embedded_x))
     for i in range(len(embedded_x)):
@@ -36,7 +35,7 @@ def word2vec_sim(x):
         for w in x[i]: embedded_x[i] += emb[w]
         embedded_x[i] /= len(x[i])
 
-    print('calculate distances')
+    print('calculating distances')
     dist = np.zeros((len(embedded_x), len(embedded_x)))
     for i in range(len(embedded_x)):
         for j in range(len(embedded_x)):
@@ -80,4 +79,4 @@ if __name__ == '__main__':
         pairwise_sim = lsa_sim(ideas)
         np.save('storage/results/lsa_similarity_'+results_name+'.npy', pairwise_sim)
     else:
-        print('This classifier technique is not offered')
+        print('This similarity technique is not offered')
