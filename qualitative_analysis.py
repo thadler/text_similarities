@@ -63,6 +63,10 @@ def show_least_avg_most_similar(texts, matrix_filename):
     print(texts[x_max_idx])
     print(texts[y_max_idx])
     print(pairwise_sim[x_max_idx, y_max_idx])
+
+
+def bucket_visualization:
+    pass
     
 
 if __name__ == '__main__':

@@ -62,17 +62,22 @@ def word2vec_sim(texts):
     return sim
 
 def lsa_sim(texts):
-    #vectorizer = TfidfVectorizer(tokenizer=Tokenizer(), stop_words='english', use_idf=True, smooth_idf=True)
+    """Embeds texts in lsa-representations then stores the cosine similarity 
+    between all texts in a similarity matrix
+       
+    Keyword arguments:
+    texts -- an iterable of strings where each string represents a text
+    """
     vectorizer      = TfidfVectorizer()
-    print(vectorizer)
     svd_model       = TruncatedSVD(n_components=500, algorithm='randomized', n_iter=10, random_state=42)
     svd_transformer = Pipeline([('tfidf', vectorizer), ('svd', svd_model)])
     svd_matrix      = svd_transformer.fit_transform(texts)
-    print(svd_matrix)
-
-    transformed     = svd_transformer.transform(texts)
-    sim = 1 - pairwise_distances(transformed, svd_matrix, metric='cosine', n_jobs=-1)
-    print(sim[:5,:5])
+    
+    transformed    = svd_transformer.transform(texts)
+    pairwise_dists = pairwise_distances(transformed, svd_matrix, metric='cosine', n_jobs=-1)
+    pairwise_dists = pairwise_dists - np.min(pairwise_dists)
+    pairwise_dists = pairwise_dists / np.max(pairwise_dists)
+    sim            = 1 - pairwise_dists
     return sim 
 
 
