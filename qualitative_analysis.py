@@ -1,5 +1,6 @@
 # imports
 import numpy as np
+import matplotlib.pyplot as plt
 import gensim.models.keyedvectors as word2vec
 from data_reader import study_ideas_dataset
 
@@ -65,8 +66,16 @@ def show_least_avg_most_similar(texts, matrix_filename):
     print(pairwise_sim[x_max_idx, y_max_idx])
 
 
-def bucket_visualization:
-    pass
+def bucket_visualization(matrix_filename, bins=10):
+    pairwise_sim = np.loadtxt('storage/results/'+matrix_filename)
+    upper_idxs   = np.triu_indices(pairwise_sim.shape[0])
+    dists        = pairwise_sim[upper_idxs]
+    n, bins, patches = plt.hist(dists, bins, facecolor='blue', alpha=0.75)
+    plt.xlabel('idea distance')
+    plt.ylabel('idea count')
+    plt.grid(True)
+    plt.title('Histogram of Idea Distances')
+    plt.show()
     
 
 if __name__ == '__main__':
@@ -74,4 +83,21 @@ if __name__ == '__main__':
     texts           = study_ideas_dataset()
     matrix_filename = 'word2vec_similarity_blubb.csv'
     #load_and_show_similar_to_first_example(texts, matrix_filename)
-    show_least_avg_most_similar(texts, matrix_filename)
+    #show_least_avg_most_similar(texts, matrix_filename)
+    bucket_visualization(matrix_filename, bins=50)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
