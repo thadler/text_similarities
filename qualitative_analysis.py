@@ -79,12 +79,8 @@ def distance_visualization(matrix_filename, bins=10):
     
 
 if __name__ == '__main__':
-
     texts           = study_ideas_dataset()
     matrix_filename = 'word2vec_similarity_blubb.csv'
     #load_and_show_similar_to_first_example(texts, matrix_filename)
     #show_least_avg_most_similar(texts, matrix_filename)
     distance_visualization(matrix_filename, bins=20)
-
-
-
