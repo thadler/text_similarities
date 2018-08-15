@@ -66,7 +66,7 @@ def show_least_avg_most_similar(texts, matrix_filename):
     print(pairwise_sim[x_max_idx, y_max_idx])
 
 
-def bucket_visualization(matrix_filename, bins=10):
+def distance_visualization(matrix_filename, bins=10):
     pairwise_sim = np.loadtxt('storage/results/'+matrix_filename)
     upper_idxs   = np.triu_indices(pairwise_sim.shape[0])
     dists        = pairwise_sim[upper_idxs]
@@ -84,20 +84,7 @@ if __name__ == '__main__':
     matrix_filename = 'word2vec_similarity_blubb.csv'
     #load_and_show_similar_to_first_example(texts, matrix_filename)
     #show_least_avg_most_similar(texts, matrix_filename)
-    bucket_visualization(matrix_filename, bins=50)
-
-
-
-
-
-
-
-
-
-
-
-
-
+    distance_visualization(matrix_filename, bins=20)
 
 
 
