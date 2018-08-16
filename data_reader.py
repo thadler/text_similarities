@@ -33,11 +33,11 @@ def quora_duplicate_questions_dataset():
     x2_test = [x[1] for x in x_test]
     return x1_train, x2_train, x1_test, x2_test, y_train, y_test
 
-
-def study_ideas_dataset():
-    """Loads the hcc intern study ideas dataset"""
+def study_ideas_dataset(source_file_path):
+    """Loads the hcc intern study ideas dataset. Expects a csv file path with Id \t text layout."""
     x = []
-    with open("storage/datasets/preliminary-study-ideas.csv") as fin:
+    #chi19s1-study-ideas.csv
+    with open(source_file_path) as fin:
         filereader = csv.reader(fin, delimiter='\t')
         for _, txt in filereader:
             x.append(txt.strip().replace('\n', ''))

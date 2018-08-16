@@ -11,9 +11,9 @@ from data_reader import study_ideas_dataset
 # functions that compute the similarity between texts
 
 def tf_idf_similarity(texts):
-    """Embeds texts in tf idf vector representations then stores the cosine 
+    """Embeds texts in tf idf vector representations then stores the cosine
        similarity between all texts in a similarity matrix
-       
+
     Keyword arguments:
     texts -- an iterable of strings where each string represents a text
     """
@@ -24,9 +24,8 @@ def tf_idf_similarity(texts):
     return pairwise_similarity.todense()
 
 def word2vec_sim(texts):
-    """Embeds texts in tf idf vector representations then stores the cosine 
+    """Embeds texts in tf idf vector representations then stores the cosine
        similarity between all texts in a similarity matrix
-       
     Keyword arguments:
     texts -- an iterable of strings where each string represents a text
     """
@@ -62,25 +61,27 @@ def word2vec_sim(texts):
     return sim
 
 def lsa_sim(texts):
-    """Embeds texts in lsa-representations then stores the cosine similarity 
+    """Embeds texts in lsa-representations then stores the cosine similarity
     between all texts in a similarity matrix
-       
     Keyword arguments:
     texts -- an iterable of strings where each string represents a text
     """
+    # TODO does this handle stopwords?
     vectorizer      = TfidfVectorizer()
+    # why 500? scikit-learn recommends: For LSA, a value of 100 is recommended.
     svd_model       = TruncatedSVD(n_components=500, algorithm='randomized', n_iter=10, random_state=42)
     svd_transformer = Pipeline([('tfidf', vectorizer), ('svd', svd_model)])
     svd_matrix      = svd_transformer.fit_transform(texts)
-    
+
     transformed    = svd_transformer.transform(texts)
     pairwise_dists = pairwise_distances(transformed, svd_matrix, metric='cosine', n_jobs=-1)
     pairwise_dists = pairwise_dists - np.min(pairwise_dists)
     pairwise_dists = pairwise_dists / np.max(pairwise_dists)
     sim            = 1 - pairwise_dists
-    return sim 
+    return sim
 
 
+# TODO make input file configurable. Maybe set output name depending on input name + similarity tech
 if __name__ == '__main__':
 
     script              = sys.argv[0]
@@ -88,7 +89,7 @@ if __name__ == '__main__':
     results_name        = sys.argv[2] # where to store the similarity matrix
 
     # load the data
-    ideas = study_ideas_dataset()
+    ideas = study_ideas_dataset('storage/datasets/chi19s1-study-ideas.csv')
 
     if similarity_tech=='tfidf':
         pairwise_sim = tf_idf_similarity(ideas)

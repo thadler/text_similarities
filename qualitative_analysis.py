@@ -6,7 +6,7 @@ from data_reader import study_ideas_dataset
 
 
 def load_and_show_similar_to_first_example(texts, matrix_filename):
-    texts        = study_ideas_dataset()
+    texts        = study_ideas_dataset('storage/datasets/preliminary-study-ideas.csv')
     pairwise_sim = np.loadtxt('storage/results/'+matrix_filename)
     sim_tech     = matrix_filename.split('_')[0]
 
@@ -32,7 +32,7 @@ def load_and_show_similar_to_first_example(texts, matrix_filename):
         print('similarity technique is not offered')
 
 def show_least_avg_most_similar(texts, matrix_filename):
-    texts        = study_ideas_dataset()
+    texts        = study_ideas_dataset('storage/datasets/preliminary-study-ideas.csv')
     pairwise_sim = np.loadtxt('storage/results/'+matrix_filename)
     sim_tech     = matrix_filename.split('_')[0]
 
@@ -76,11 +76,11 @@ def distance_visualization(matrix_filename, bins=10):
     plt.grid(True)
     plt.title('Histogram of Idea Distances')
     plt.show()
-    
+
 
 if __name__ == '__main__':
-    texts           = study_ideas_dataset()
-    matrix_filename = 'word2vec_similarity_blubb.csv'
+    texts           = study_ideas_dataset('storage/datasets/preliminary-study-ideas.csv')
+    matrix_filename = 'lsa_similarity_preliminary-study.csv'
     #load_and_show_similar_to_first_example(texts, matrix_filename)
     #show_least_avg_most_similar(texts, matrix_filename)
     distance_visualization(matrix_filename, bins=20)
