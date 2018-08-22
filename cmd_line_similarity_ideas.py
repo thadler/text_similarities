@@ -19,7 +19,7 @@ def tf_idf_similarity(texts):
     """
     tfidf = TfidfVectorizer().fit_transform(texts)
     pairwise_similarity = tfidf * tfidf.T
-    # automatically positive for tfidf
+    # automatically in [0,1] for tfidf
     print(pairwise_similarity[:5, :5])
     return pairwise_similarity.todense()
 
@@ -41,7 +41,6 @@ def word2vec_sim(texts):
     for i in range(len(texts)):
         if len(texts[i]) == 0:
             texts[i] = ['from']
-    print(texts)
 
     print('creating embedded texts')
     embedded_texts = np.zeros((len(texts), emb['from'].shape[0]), dtype=np.float32)
