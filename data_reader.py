@@ -42,6 +42,15 @@ def load_chi19p_C1_complete():
         sims  = []
     return texts, sims
 
+def load_chi19p_C3_complete():
+    with open('storage/datasets/chi19p-c3-complete.csv') as f:
+        data  = f.readlines()
+        data  = [line.replace('"','').replace('\n','').replace(',',' ,').replace('.',' .') for line in data[1:]]
+        data  = [line.split(',') for line in data]
+        texts = [line[2] for line in data]
+        sims  = []
+    return texts, sims
+
 
 
 if __name__=='__main__':
@@ -50,3 +59,4 @@ if __name__=='__main__':
     load_test_texts_and_similarities()
     load_chi19ppre_partial_approved()
     load_chi19p_C1_complete()
+    load_chi19p_C3_complete()
