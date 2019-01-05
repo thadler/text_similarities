@@ -8,9 +8,13 @@ if __name__ == '__main__':
     ai_sims  = sys.argv[1] # manually annotated similarities filename 
     ni_sims  = sys.argv[2] # machine  predicted similarities filename
 
+    if 'ratings' not in ai_sims:
+        print("Not the correct filename, doesn't contain 'ratings'")
+        quit()
+
     # load the data
-    ai_sims = np.array(list(map(float, open(ai_sims).readlines())))
-    ni_sims = np.array(list(map(float, open(ni_sims).readlines())))
+    ni_txt_2_sims = load_ni_sims(ni_sims)
+    #ai_sims = np.array(list(map(float, open(ai_sims).readlines())))
     
     # pearson's correlation coefficient requires:
     # linear relationship
@@ -19,4 +23,3 @@ if __name__ == '__main__':
     
     # spearman's correlation coefficient
     print("spearman's rank-order correlation coefficient:\n", spearmanr(correct_values, predicted_values)[0])
-    
