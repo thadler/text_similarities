@@ -50,12 +50,18 @@ def load_chi19p_C3_complete():
     return texts, sims
 
 def load_ni_sims(fname): # ni = natural intelligence
+    """
+    returns a dict object with (t1,t2) -> similarity <- (t2,t1)
+    """
     with open('storage/datasets/chi19p-c1-ratings.csv') as f:
         data = csv.reader(f, delimiter=',', quotechar='"')
         data = [line for line in data]
         preprocess = lambda txt: txt.replace('"','').replace('\n','').replace(',',' ,').replace('.',' .')
-        data = dict( ((preprocess(l[0]), preprocess(l[1])), float(l[2])) for l in data)
-        print(data)
+        dictionary = dict()
+        for l in data:
+            dictionary[(preprocess(l[0]), preprocess(l[1]))] = float(l[2])
+            dictionary[(preprocess(l[1]), preprocess(l[0]))] = float(l[2])
+    return dictionary
 
 if __name__=='__main__':
     load_train_texts_and_similarities()
