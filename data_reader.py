@@ -53,10 +53,6 @@ def load_ni_sims(fname): # ni = natural intelligence
     with open('storage/datasets/chi19p-c1-ratings.csv') as f:
         data = csv.reader(f, delimiter=',', quotechar='"')
         data = [line for line in data]
-        for i, line in enumerate(data):
-            print(i, line)
-            #if i==4: quit()
-            #print(len(line), end=', ')
         preprocess = lambda txt: txt.replace('"','').replace('\n','').replace(',',' ,').replace('.',' .')
         data = dict( ((preprocess(l[0]), preprocess(l[1])), float(l[2])) for l in data)
         print(data)
