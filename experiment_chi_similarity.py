@@ -4,7 +4,7 @@ from similarity_ideas import *
 
 if __name__ == '__main__':
     texts, sims = load_chi19p_C1_complete()
-    
+
     lsa_sim = lsa_sim(texts) # sim for all texts, we're only interested in the original sims
     lsa_sim = lsa_sim*5
     np.savetxt('storage/predictions/chi_c1_complete/lsa_sim.txt', lsa_sim)
