@@ -225,7 +225,6 @@ def binary_cosine_sim(texts):
     sim = np.zeros((len(texts), len(texts)))
     for i in range(0, len(binary_texts), 2):
         sim[i, i+1] = np.dot(binary_texts[i], binary_texts[i+1]) / (np.linalg.norm(binary_texts[i]) * np.linalg.norm(binary_texts[i+1]))
-        print(i, i+1, sim[i, i+1])
     return sim
 
 def dan_sim(texts):
