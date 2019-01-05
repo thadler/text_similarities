@@ -39,9 +39,9 @@ def glove_sims(emb_texts):
 
 
 if __name__=='__main__':
-    texts     = load_chi19p_C1_complete()
-    emb       = load_glove_wv('storage/wordvectors/glove.6B.50d.txt')
-    emb_texts = embed_texts_tfidf_weighting(texts, emb)
-    sim       = glove_sims(emb_texts)
+    texts, sims = load_chi19p_C1_complete()
+    emb         = load_glove_wv('storage/wordvectors/glove.6B.50d.txt')
+    emb_texts   = embed_texts_tfidf_weighting(texts, emb)
+    sim         = glove_sims(emb_texts)
     np.savetxt('storage/chi19p-C1-complete-sims-tfidf.txt', sim)
     
