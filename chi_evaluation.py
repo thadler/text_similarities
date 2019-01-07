@@ -29,7 +29,7 @@ def load_data_chi(chi_nr, manual_fn, automatic_fn):
     return ni_txt_2_sims, ai_txt_2_sims
 
 
-def get_correlations_chi(ni_txt_2_sims, ai_txt_2_sims):
+def get_correlation_chi(ni_txt_2_sims, ai_txt_2_sims):
     n = len(ni_txt_2_sims.keys())
     correct_values   = np.zeros(n)
     predicted_values = np.zeros(n)
@@ -69,5 +69,5 @@ if __name__ == '__main__':
     ni_txt_2_sims, ai_txt_2_sims = load_data_chi(int(chi_nr), manual_fn, automatic_fn)
 
     # calculate peason and spearman correlation
-    get_correlations_chi(ni_txt_2_sims, ai_txt_2_sims)
+    get_correlation_chi(ni_txt_2_sims, ai_txt_2_sims)
     
