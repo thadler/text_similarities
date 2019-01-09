@@ -47,10 +47,23 @@ def load_chi19p_C1_complete(sim_prediction_filename=None):
     return texts, sims
 
 def load_chi19p_C2_complete(sim_prediction_filename=None):
-    with open('storage/datasets/chi19p-C3-complete.csv') as f:
+    with open('storage/datasets/chi19p-C2-complete.csv') as f:
         data  = csv.reader(f, delimiter=',', quotechar='"')
         data  = [line[2] for line in data]
         texts = [line.replace('"','').replace('\n','').replace(',',' ,').replace('.',' .') for line in data[1:]]
+    sims  = []
+    if sim_prediction_filename is not None:    
+        sims = np.loadtxt(sim_prediction_filename)
+    return texts, sims
+
+def load_chi19p_C2_complete_replace_hit(sim_prediction_filename=None):
+    with open('storage/datasets/chi19p-C2-complete.csv') as f:
+        data  = csv.reader(f, delimiter=',', quotechar='"')
+        data  = [line[2] for line in data]
+        texts = [line.replace('"','').replace('\n','').replace(',',' ,').replace('.',' .') for line in data[1:]]
+        texts = [line.replace(' hit ', ' human intelligence task ') for line in texts]
+        texts = [line.replace(' HIT ', ' human intelligence task ') for line in texts]
+        texts = [line.replace(' Hit ',' human intelligence task ') for line in texts]
     sims  = []
     if sim_prediction_filename is not None:    
         sims = np.loadtxt(sim_prediction_filename)
@@ -78,6 +91,21 @@ def load_ni_sims(fname): # ni = natural intelligence
         for l in data:
             dictionary[(preprocess(l[0]), preprocess(l[1]))] = float(l[2])
             dictionary[(preprocess(l[1]), preprocess(l[0]))] = float(l[2])
+    return dictionary
+
+def load_ni_sims_C2_complete_replace_hit(fname): # ni = natural intelligence
+    """
+    returns a dict object with (t1,t2) -> similarity <- (t2,t1)
+    """
+    with open(fname) as f:
+        data = csv.reader(f, delimiter=',', quotechar='"')
+        data = [line for line in data]
+        preprocess = lambda txt: txt.replace('"','').replace('\n','').replace(',',' ,').replace('.',' .')
+        hit_remove = lambda txt: txt.replace(' hit ', ' human intelligence task ').replace(' HIT ', ' human intelligence task ').replace(' Hit ',' human intelligence task ')
+    dictionary = dict()
+    for l in data:
+        dictionary[(hit_remove(preprocess(l[0])), hit_remove(preprocess(l[1])))] = float(l[2])
+        dictionary[(hit_remove(preprocess(l[1])), hit_remove(preprocess(l[0])))] = float(l[2])
     return dictionary
 
 if __name__=='__main__':

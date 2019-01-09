@@ -216,15 +216,16 @@ def binary_cosine_sim(texts):
     all_texts = " ".join(texts)
     words = set(word_tokenize(all_texts, language='english'))
     words2idx = {word:i for i, word in enumerate(words)}
-    binary_texts = np.zeros((len(texts), len(words2idx)))
+    binary_texts = [set() for i in range(len(texts))]
     texts = [word_tokenize(t, language='english') for t in texts]
     for i, text in enumerate(texts):
         for w in text:
-            binary_texts[i, words2idx[w]] = 1
+            binary_texts[i].add(words2idx[w])
     print('calculating similarities')
     sim = np.zeros((len(texts), len(texts)))
-    for i in range(0, len(binary_texts), 2):
-        sim[i, i+1] = np.dot(binary_texts[i], binary_texts[i+1]) / (np.linalg.norm(binary_texts[i]) * np.linalg.norm(binary_texts[i+1]))
+    for i in range(len(binary_texts)):
+        for j in range(len(binary_texts)):
+            sim[i,j] = (1.0*len(binary_texts[i].intersection(binary_texts[j]))) / (np.sqrt(len(binary_texts[i])) * np.sqrt(len(binary_texts[j])))
     return sim
 
 def dan_sim(texts):

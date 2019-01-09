@@ -9,7 +9,7 @@ def get_ai_txt_2_sims(ai_txts, ai_sims, ni_txt_2_sims):
     annotated however. So we must select the ai-similarities relevant for the
     comparison.
     """
-    
+    print(ai_txts)
     txt_2_idx = dict((t.replace('  ',' ').strip(), i) for i,t in enumerate(ai_txts))
     dictionary = dict()
     for i, k in enumerate(ni_txt_2_sims):
@@ -21,7 +21,11 @@ def get_ai_txt_2_sims(ai_txts, ai_sims, ni_txt_2_sims):
 
 
 def load_data_chi(chi_nr, manual_fn, automatic_fn):
-    ni_txt_2_sims = load_ni_sims(manual_fn)
+    if chi_nr>0: ni_txt_2_sims = load_ni_sims(manual_fn)
+    else:
+        ni_txt_2_sims = load_ni_sims_C2_complete_replace_hit(manual_fn)
+        ai_txts, ai_sims = load_chi19p_C2_complete_replace_hit(automatic_fn)
+
     if chi_nr==1: ai_txts, ai_sims = load_chi19p_C1_complete(automatic_fn)
     if chi_nr==2: ai_txts, ai_sims = load_chi19p_C2_complete(automatic_fn)
     if chi_nr==3: ai_txts, ai_sims = load_chi19p_C3_complete(automatic_fn)
@@ -29,7 +33,7 @@ def load_data_chi(chi_nr, manual_fn, automatic_fn):
     return ni_txt_2_sims, ai_txt_2_sims
 
 
-def get_correlation_chi(ni_txt_2_sims, ai_txt_2_sims):
+def get_correlation_chi(ni_txt_2_sims, ai_txt_2_sims, print_it=True):
     n = len(ni_txt_2_sims.keys())
     correct_values   = np.zeros(n)
     predicted_values = np.zeros(n)
@@ -41,8 +45,9 @@ def get_correlation_chi(ni_txt_2_sims, ai_txt_2_sims):
     # spearman's correlation coefficient
     pc = pearsonr(correct_values, predicted_values)[0]
     sc = spearmanr(correct_values, predicted_values)[0]
-    print("spearman's rank-order correlation coefficient:\n", sc)
-    print("pearson's correlation coefficient:\n",             pc)
+    if print_it:
+        print("spearman's rank-order correlation coefficient:\n", sc)
+        print("pearson's correlation coefficient:\n",             pc)
     return pc, sc
 
     

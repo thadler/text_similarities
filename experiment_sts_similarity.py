@@ -7,7 +7,7 @@ if __name__ == '__main__':
 
     # lsa similarity
     texts_flatten = [txt for i in range(len(texts)) for txt in texts[i]]
-    
+    """
     lsa_sim = lsa_sim(texts_flatten) # sim for all texts, we're only interested in the original sims
     lsa_sim = np.array([lsa_sim[2*i, 2*i+1] for i in range(len(texts))])
     lsa_sim = lsa_sim*5
@@ -21,14 +21,14 @@ if __name__ == '__main__':
     with open('storage/predictions/tfidf_sim.txt', 'w') as f:
         for i in range(len(tfidf_sim)):
             f.write(str(tfidf_sim[i])+'\n')
-
-    binary_sim = binary_cosine_sim(texts_flatten)
+    """
+    binary_sim = binary_cosine_sim_2(texts_flatten)
     binary_sim = np.array([binary_sim[2*i, 2*i+1] for i in range(len(texts))])
     binary_sim = binary_sim*5
-    with open('storage/predictions/binary_sim.txt', 'w') as f:
+    with open('storage/predictions/binary_sim_2.txt', 'w') as f:
         for i in range(len(binary_sim)):
             f.write(str(binary_sim[i])+'\n')
-    
+    """
     word2vec_similarities = word2vec_sim(texts_flatten, True, 'cosine')
     word2vec_similarities = np.array([word2vec_similarities[2*i, 2*i+1] for i in range(len(texts))])
     word2vec_similarities = word2vec_similarities*5
@@ -119,4 +119,4 @@ if __name__ == '__main__':
     with open('storage/predictions/dan_sim.txt', 'w') as f:
         for i in range(len(dan_sim)):
             f.write(str(dan_sim[i])+'\n')
-    
+    """

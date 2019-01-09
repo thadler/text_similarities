@@ -3,9 +3,10 @@ from similarity_ideas import *
 
 
 if __name__ == '__main__':
-    folder_structure = 'storage/predictions/chi19p-C3-complete/'
-    texts, sims = load_chi19p_C3_complete()
-
+    folder_structure = 'storage/predictions/chi19p-C2-complete_replace_hit/'
+    #texts, sims = load_chi19p_C3_complete()
+    texts, sims = load_chi19p_C2_complete_replace_hit()
+    
     lsa_sim = lsa_sim(texts) # sim for all texts, we're only interested in the original sims
     lsa_sim = lsa_sim*5
     np.savetxt(folder_structure+'lsa_sim.txt', lsa_sim)
@@ -16,9 +17,7 @@ if __name__ == '__main__':
     
     binary_sim = binary_cosine_sim(texts)
     binary_sim = binary_sim*5
-    with open(folder_structure+'binary_sim.txt', 'w') as f:
-        for i in range(len(binary_sim)):
-            f.write(str(binary_sim[i])+'\n')
+    np.savetxt(folder_structure+'binary_sim.txt', binary_sim)
     
     word2vec_similarities = word2vec_sim(texts, True, 'cosine')
     word2vec_similarities = word2vec_similarities*5
@@ -71,4 +70,4 @@ if __name__ == '__main__':
     dan_sim = dan_sim(texts)
     dan_sim = dan_sim*5
     np.savetxt(folder_structure+'dan_sim.txt', dan_sim)
-
+    
